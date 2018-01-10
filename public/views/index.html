@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html ng-app="hotelApp">
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="stylesheets/style.css" />
+    <link href="bower_components/angularjs-datepicker/src/css/angular-datepicker.css" rel="stylesheet" type="text/css" />
+
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="bower_components/angular/angular.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+    <script src="bower_components/angularjs-datepicker/src/js/angular-datepicker.js"></script>
+    <script src="javascripts/app.js" type="text/javascript"></script>
+</head>
+
+<body ng-cloak class="mainView">
+    <div class="col-lg-12" ng-controller="hotelDealController">
+        <div class="form-group"></div>
+        <div class="row">
+            <div class="col-lg-12">
+                <h1 class="page-header">
+                    Hotel Deals
+                </h1>
+            </div>
+        </div>
+        <div ng-if="errorAccured" class="row">
+            <div class="col-lg-11">
+                <div class="alert alert-danger">
+                    Error, an error occured while performing this operation
+                </div>
+            </div>
+        </div>
+        <div ng-enter="search()" class="col-lg-8">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label>Country</label>
+                        <input class="form-control" ng-model="searchObj.destinationCountry" />
+                    </div>
+                    <div class="col-lg-6">
+                        <label>Province</label>
+                        <input class="form-control" ng-model="searchObj.destinationProvince" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label>City</label>
+                        <input class="form-control" ng-model="searchObj.destinationCity" />
+                    </div>
+                    <div class="col-lg-6">
+                        <label>Region id's</label>
+                        <span class="redFont smallText"> * you can add multi id's seperated by , </span>
+                        <input class="form-control" ng-model="searchObj.regionIds" />
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label>Min start date</label>
+                        <datepicker date-min-limit="{{minDate}}" date-format="yyyy-MM-dd" selector="form-control">
+                            <div class="input-group">
+                                <input ng-model="searchObj.minTripStartDate" class="form-control" placeholder="Choose a date" />
+                                <span class="input-group-addon" style="cursor: pointer">
+                                    <i class="glyphicon glyphicon-calendar"></i>
+                                </span>
+                            </div>
+
+                        </datepicker>
+                    </div>
+                    <div class="col-lg-6">
+                        <label>Max start date</label>
+                        <datepicker date-min-limit="{{minDate}}" date-format="yyyy-MM-dd" selector="form-control">
+                            <div class="input-group">
+                                <input ng-model="searchObj.maxTripStartDate" class="form-control" placeholder="Choose a date" />
+                                <span class="input-group-addon" style="cursor: pointer">
+                                    <i class="glyphicon glyphicon-calendar"></i>
+                                </span>
+                            </div>
+                            <p ng-show="invalidMinMaxStartDate" class="help-block validation">Min date can't be bigger than max</p>
+
+                        </datepicker>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label>Min rating</label>
+                        <input type="number" class="form-control" ng-model="searchObj.minStarRating" />
+                        <p ng-show="invalidMinStarRating" class="help-block validation">Invalid Number</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <label>Max rating</label>
+                        <input type="number" class="form-control" ng-model="searchObj.maxStarRating" />
+                        <p ng-show="invalidMaxStarRating" class="help-block validation">Invalid Number</p>
+                        <p ng-show="invalidMinMaxStarRating" class="help-block validation">Min can't be bigger than max</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label>Min price</label>
+                        <input type="number" class="form-control" ng-model="searchObj.minTotalRate" />
+                        <p ng-show="invalidMinTotalRate" class="help-block validation">Invalid Number</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <label>Max price</label>
+                        <input type="number" class="form-control" ng-model="searchObj.maxTotalRate" />
+                        <p ng-show="invalidMaxTotalRate" class="help-block validation">Invalid Number</p>
+                        <p ng-show="invalidMinMaxTotalRate" class="help-block validation">Min can't be bigger than max</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label>Min guest rating</label>
+                        <input type="number" class="form-control" ng-model="searchObj.minGuestRating" />
+                        <p ng-show="invalidMinGuestRating" class="help-block validation">Invalid Number</p>
+                    </div>
+                    <div class="col-lg-6">
+                        <label>Max guest rating</label>
+                        <input type="number" class="form-control" ng-model="searchObj.maxGuestRating" />
+                        <p ng-show="invalidMaxGuestRating" class="help-block validation">Invalid Number</p>
+                        <p ng-show="invalidMinMaxGuestRating" class="help-block validation">Min can't be bigger than max</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <label>Length of stay</label>
+                        <input type="number" class="form-control" ng-model="searchObj.lengthOfStay" />
+                        <p ng-show="invalidLengthOfStay" class="help-block redFont">Invalid Number</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row ">
+            <div class="col-lg-11">
+                <div class="col-lg-11">
+                    <div class="form-group">
+                        <button ng-disabled="btnShowLoading" class="btn btn-primary btn-search-data" ng-click="search();">
+                            Search
+                            <i class="glyphicon glyphicon-search"></i>
+                            <span ng-show="btnShowLoading">
+                                <i class="glyphicon glyphicon-refresh spinning"></i>
+                            </span>
+                        </button>
+                        <button ng-disabled="btnShowLoading" class="btn btn-warning" ng-click="reset(); ">
+                            Reset
+                            <i class="glyphicon glyphicon-remove"></i>
+                            <span ng-show="btnShowLoading">
+                                <i class="glyphicon glyphicon-refresh spinning"></i>
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="col-lg-12">
+                    <div class="col-lg-6 hotelDev" ng-repeat="deal in hotelDeals">
+                        <div class="form-group"></div>
+                        <div class="col-lg-3">
+                            <img width="100%" ng-src="{{deal.hotelInfo.hotelImageUrl}}" />
+                        </div>
+                        <div class="col-lg-6">
+                            <div>
+                                <label class="hotelName"> {{deal.hotelInfo.hotelName}}</label>
+                            </div>
+                            <div>
+                                <span class="rating-static rating-{{deal.hotelInfo.hotelStarRating*10}}"></span>
+                            </div>
+                            <div>
+                                <span class="smallText"> {{deal.destination.longName}}</span>
+                            </div>
+
+
+                            <div class="form-group"></div>
+                            <div>
+                                <span>
+                                    <b>start date : </b>{{deal.offerDateRange.travelStartDate[0]+'/'+deal.offerDateRange.travelStartDate[1]+'/'+deal.offerDateRange.travelStartDate[2]}}</span>
+                            </div>
+                            <div>
+                                <span>
+                                    <b>end date : </b>{{deal.offerDateRange.travelEndDate[0]+'/'+deal.offerDateRange.travelEndDate[1]+'/'+deal.offerDateRange.travelEndDate[2]}}</span>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-3">
+                            <div>
+                                <label> {{deal.hotelPricingInfo.totalPriceValue}}$</label>
+                            </div>
+                            <div>
+                                <span>
+                                    <b>{{deal.hotelInfo.hotelGuestReviewRating}}/5</b> guest rating</span>
+                            </div>
+                            <div>
+                                <span>
+                                    <b>{{deal.hotelInfo.hotelReviewTotal}}</b> total reviews</span>
+                            </div>
+                            <div>
+                                <span>
+                                    <b>perriod : </b>{{deal.offerDateRange.lengthOfStay}} days</span>
+                            </div>
+                            <div class="form-group"></div>
+                            <div>
+                                <span class="redFont">
+                                    <b ng-if="deal.hotelUrgencyInfo.numberOfRoomsLeft!=-1">{{deal.hotelUrgencyInfo.numberOfRoomsLeft}}</b>
+                                    <span ng-if="deal.hotelUrgencyInfo.numberOfRoomsLeft==-1">no</span> available rooms </span>
+                            </div>
+
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-group"></div>
+    </div>
+</body>
+
+</html>
