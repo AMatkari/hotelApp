@@ -4,6 +4,7 @@ Instructions for setting site in local sandbox:
 3. install npm packages ( npm install )
 4. install bower component ( bower install )
 5. start the application ( node bin/www )
+6. open http://localhost:3000/
 
 assumptions and issues
 1. RegionIds parameter is not usable for users, but i didn't find parameter to pass instead like (region         names or a list of region names and ids)  
