@@ -1,12 +1,15 @@
 .hotelDev{
-    border: 1px solid #ededed;
+    border: 1px solid #a7c6ff;
     height: 200px;
     
     background-color: white;
 }
+.page-header{
+    border-bottom:0px solid #a7c6ff !important;
+}
 .mainView{
     margin: 10px;
-    background-color: #ededed;
+    background-color: #a7c6ff;
 }
 
 .hotelName{
